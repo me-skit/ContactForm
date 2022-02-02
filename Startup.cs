@@ -41,6 +41,13 @@ namespace SkeletonNetCore
             services.AddTransient<IDao<ProductDto>, ProductDaoImpl>();
             services.AddTransient<ISvc<Contact>, ContactSvcImpl>();
             services.AddTransient<IDao<ContactDto>, ContactDaoImpl>();
+
+            services.AddCors(options =>
+            {
+            options.AddPolicy("Todos",
+                builer => builer.WithOrigins("*").WithHeaders("*").WithMethods("*"));
+            });
+
             services.AddControllers();
             services.AddSwaggerGen(options =>
             {
@@ -82,6 +89,8 @@ namespace SkeletonNetCore
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors("Todos");
 
             app.UseEndpoints(endpoints =>
             {
